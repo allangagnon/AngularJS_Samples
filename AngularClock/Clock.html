@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="js/angular.min.js"></script>
+    <script src="js/raphael-min.js"></script>
+    <title>Angular Clock</title>
+</head>
+<body>
+<div style="display:none" ng-controller="MyController">
+    <div>{{ clock }}</div>
+</div>
+<script type="text/javascript">
+    function clock() {
+        var canvas = Raphael("clock_id", 400, 400);
+        var clock = canvas.circle(100, 100, 95);
+        clock.attr({"fill": "#f5f5f5", "stroke": "#444444", "stroke-width": "5"})
+
+        for (i = 0; i < 12; i++) {
+            var beginDraw_x = 100 + Math.round(80 * Math.cos(30 * i * Math.PI / 180));
+            var beginDraw_y = 100 + Math.round(80 * Math.sin(30 * i * Math.PI / 180));
+
+            canvas.circle(beginDraw_x, beginDraw_y, 10.5);
+            var t = i + 3;
+            if (t > 12) {
+                t -= 12
+                canvas.text(beginDraw_x, beginDraw_y, t);
+            }
+            if (t <= 12) {
+                canvas.text(beginDraw_x, beginDraw_y, t);
+            }
+        }
+        hourHand = canvas.path("M100 100L100 50");
+        hourHand.attr({stroke: "#444444", "stroke-width": 6});
+        minuteHand = canvas.path("M100 100L100 40");
+        minuteHand.attr({stroke: "#444444", "stroke-width": 4});
+        secondHand = canvas.path("M100 110L100 25");
+        secondHand.attr({stroke: "#444444", "stroke-width": 2});
+        var pin = canvas.circle(100, 100, 5);
+        pin.attr("fill", "#000000");
+    }
+</script>
+<script type="text/javascript">
+    function MyController($scope) {
+        $scope.clock = new Date();
+        var updateClock = function () {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            $scope.clock = new Date();
+            $scope.hourHand = hourHand.transform('r' + (30 * hours + (minutes / 2.5)) + ', 100, 100?');
+            $scope.minuteHand = minuteHand.transform('r' + 6 * minutes + ', 100, 100');
+            $scope.secondHand = secondHand.transform('r' + 6 * seconds + ', 100, 100');
+            $scope.$apply(updateClock);
+        };
+        setInterval(function () {
+            updateClock();
+        }, 1000);
+        updateClock();
+    }
+    ;
+</script>
+<div id="clock_id"></div>
+<script>clock()</script>
+
+</body>
+</html>
