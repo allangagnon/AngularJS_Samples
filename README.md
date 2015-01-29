@@ -1,9 +1,7 @@
 AngularJS_Samples
 =================
 
-This is a sample application I created using some help from this site...(thanks)...
-
-http://www.emanueleferonato.com/2010/12/11/javascript-analog-clock-with-no-images-and-no-css/
+This is a sample application I created.
 
 On the RaphaelJS Clock and a angular free running clock with the connections to the clock hands.
 
